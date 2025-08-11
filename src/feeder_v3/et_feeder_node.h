@@ -213,7 +213,8 @@ T ETFeederNode::get_attr(const std::string& attr_name) const {
   }
   throw std::runtime_error(
       "Attribute " + attr_name + " not found in node " +
-      std::to_string(this->node_id));
+      std::to_string(this->node_id) +
+      " feeder->id=" + std::to_string(this->feeder._operator_id));
 }
 template <>
 inline ChakraAttr ETFeederNode::get_attr<ChakraAttr>(
