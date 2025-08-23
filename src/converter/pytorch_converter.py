@@ -491,8 +491,11 @@ class PyTorchConverter:
             parent_ids.update(node.data_deps)
 
         dangling_nodes = [
-            node_id for node_id, node in protobuf_node_map.items() if node_id not in parent_ids and not node.data_deps
+            node_id for node_id, node in protobuf_node_map.items() if node_id not in parent_ids and not node.data_deps and not node.ctrl_deps
         ]
+        print(f"Identified {len(dangling_nodes)} dangling nodes in the protobuf node map. Removing them...")
+        print("DEBUG: not removing nodes")
+        return protobuf_node_map
         for node_id in dangling_nodes:
             del protobuf_node_map[node_id]
 

@@ -4,6 +4,7 @@
 #include <stdexcept>
 #include <unordered_map>
 #include <unordered_set>
+#include <iostream>
 
 using namespace Chakra::FeederV3;
 
@@ -13,11 +14,14 @@ void _DependancyLayer::add_node(
   std::unique_lock<std::shared_mutex> lock(this->mutex);
   this->dirty = true;
   this->_helper_allocate_bucket(node);
+  std::cout << "Adding parent for node " << node << ": ";
   for (auto& parent : parents) {
+    std::cout << parent << " ";
     this->_helper_allocate_bucket(parent);
     this->child_map_parent[node].insert(parent);
     this->parent_map_child[parent].insert(node);
   }
+  std::cout << std::endl;
 }
 
 void _DependancyLayer::add_node_children(

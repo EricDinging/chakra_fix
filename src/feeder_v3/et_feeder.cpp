@@ -1,6 +1,7 @@
 #include "et_feeder.h"
 #include "common.h"
 #include "protobuf_util.h"
+#include <iostream>
 
 using namespace Chakra::FeederV3;
 
@@ -65,6 +66,7 @@ void ETFeeder::build_index_dependancy_cache() {
     last_pos = this->chakra_file.tellg();
     // build dependancy
     this->dependancy_resolver.add_node(node);
+    std::cout << "Adding node " << node_id << std::endl;
   }
   this->chakra_file.clear();
   this->chakra_file.seekg(0, std::ios::beg);

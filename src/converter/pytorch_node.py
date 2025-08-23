@@ -85,23 +85,24 @@ class PyTorchNode:
         Args:
             node_data (Dict[str, Any]): The node data to be parsed.
         """
-        if self.schema in self.SUPPORTED_VERSIONS:
-            if self.schema in ["1.0.2-chakra.0.0.4", "1.0.3-chakra.0.0.4", "1.1.0-chakra.0.0.4"]:
-                self._parse_data_1_0_3_chakra_0_0_4(node_data)
-        else:
-            raise ValueError(
-                f"Unsupported schema version '{self.schema}'. Please check if the schema version is in the list of "
-                f"supported versions: {self.SUPPORTED_VERSIONS}. The schema version of the trace is not supported by "
-                f"the converter. The schema version is determined by the PyTorch version used to collect Chakra host "
-                f"execution traces. Please consider changing the PyTorch version you are using. For more details, you "
-                f"can follow the git history of the relevant file: "
-                f"https://github.com/pytorch/pytorch/blob/7cd48df2dae7e2194438b162968c47d1f05bf20e/torch/csrc/"
-                f"profiler/standalone/execution_trace_observer.cpp#L308. Check which PyTorch versions generate Chakra "
-                f"host traces that are supported by the converter."
-            )
+        # if self.schema in self.SUPPORTED_VERSIONS:
+        #     if self.schema in ["1.0.2-chakra.0.0.4", "1.0.3-chakra.0.0.4", "1.1.0-chakra.0.0.4"]:
+        self._parse_data_1_0_3_chakra_0_0_4(node_data)
+        # else:
+        #     raise ValueError(
+        #         f"Unsupported schema version '{self.schema}'. Please check if the schema version is in the list of "
+        #         f"supported versions: {self.SUPPORTED_VERSIONS}. The schema version of the trace is not supported by "
+        #         f"the converter. The schema version is determined by the PyTorch version used to collect Chakra host "
+        #         f"execution traces. Please consider changing the PyTorch version you are using. For more details, you "
+        #         f"can follow the git history of the relevant file: "
+        #         f"https://github.com/pytorch/pytorch/blob/7cd48df2dae7e2194438b162968c47d1f05bf20e/torch/csrc/"
+        #         f"profiler/standalone/execution_trace_observer.cpp#L308. Check which PyTorch versions generate Chakra "
+        #         f"host traces that are supported by the converter."
+        #     )
 
     def _parse_data_1_0_3_chakra_0_0_4(self, node_data: Dict[str, Any]) -> None:
         self.id = node_data["id"]
+        print(self.id)
         self.name = node_data["name"]
         self.parent = node_data["ctrl_deps"]
         self.inputs = node_data["inputs"]
@@ -117,6 +118,8 @@ class PyTorchNode:
         # In SendRecv nodes, pg_name is in the attrs if exists.
         # Otherwise, pg_name is not present.
         self.pg_name = node_data.get("pg_name", "")
+        if self.pg_name:
+            print(self.pg_name)
 
         for attr in node_data.get("attrs", []):
             setattr(self, attr["name"], attr["value"])

@@ -45,6 +45,7 @@ class ProtobufUtils {
     f.read(buffer_use, size);
     buffer_use[size] = 0;
     msg.ParseFromArray(buffer_use, size);
+    std::cout << "Message: " << msg.DebugString() << std::endl;
     if (size > DEFAULT_PROTOBUF_BUFFER_SIZE - 1) {
       delete[] buffer_use;
     }
