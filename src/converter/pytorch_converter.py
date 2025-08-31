@@ -511,13 +511,15 @@ class PyTorchConverter:
         dangling_nodes = [
             node_id for node_id, node in protobuf_node_map.items() if node_id not in parent_ids and not node.data_deps
         ]
-        for node_id in dangling_nodes:
-            del protobuf_node_map[node_id]
 
-        if dangling_nodes:
-            logging.debug(f"Identified and removed {len(dangling_nodes)} dangling nodes:")
-            for node_id in dangling_nodes:
-                logging.debug(f" - Node ID {node_id}")
+        # TODO check dangling nodes
+        # for node_id in dangling_nodes:
+        #     del protobuf_node_map[node_id]
+
+        # if dangling_nodes:
+        #     logging.debug(f"Identified and removed {len(dangling_nodes)} dangling nodes:")
+        #     for node_id in dangling_nodes:
+        #         logging.debug(f" - Node ID {node_id}")
 
         return protobuf_node_map
 
